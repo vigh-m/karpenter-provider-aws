@@ -1353,6 +1353,20 @@ cluster-name = 'cluster'
 'memory.available' = '12%%'
 ```
 
+#### Bottlerocket and Neuron
+
+Bottlerocket v1.30.0+ supports Inferentia and Trainium Instance Types. To enable Neuron workloads, you will need the following user-data configurations:
+
+```toml
+[settings]
+[settings.kubernetes]
+device-ownership-from-security-context = true
+```
+
+This setting allows the container to take ownership of the mounted Neuron device based on the runAsUser and runAsGroup values provided in the spec. For more details on this, see the [Kubernetes documentation on Non-root Containers](https://kubernetes.io/blog/2021/11/09/non-root-containers-and-devices/)
+
+Along with this setting, you will need to deploy the [neuron-device-plugin](https://awsdocs-neuron.readthedocs-hosted.com/en/latest/containers/kubernetes-getting-started.html#neuron-device-plugin), and optionally, the [neuron-scheduler](https://awsdocs-neuron.readthedocs-hosted.com/en/latest/containers/kubernetes-getting-started.html#neuron-scheduler-extension).
+
 ### Windows2019/Windows2022
 
 * Your UserData must be specified as PowerShell commands.
